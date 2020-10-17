@@ -15,8 +15,6 @@ if len(inputs) != len(destinations):
     print('inputs length does not match destinations length')
     sys.exit(1)
 
-os.chdir('voice_type_classifier')
-
 for input in inputs:
     subprocess.call(['./apply.sh', input, '--device=gpu'])
 
