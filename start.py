@@ -55,7 +55,7 @@ for group, group_recordings in recordings.groupby('child_id'):
             '--output=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.out'), 
             '--error=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.err'), 
 
-            'python', 'run_vtc.py', '--inputs'
+            './run_vtc.sh', '--inputs'
         ]
         + inputs + 
         [
