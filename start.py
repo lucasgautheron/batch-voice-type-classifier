@@ -46,9 +46,14 @@ for group, group_recordings in recordings.groupby('child_id'):
     computation_time = group_recordings['vtc_computation_time_estimate'].sum()
     job_name = 'vtc_{}_{}'.format(group, datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
 
+    for destination in destinations:
+        os.makedirs(os.path.dirname(destination), exist_ok = True)
+
     proc = subprocess.Popen(
         [
             'sbatch',
+            '--partition=gpu2'
+            '--gres=gpu:1',
             '--job-name=' + job_name,
             '--mem=30G',
             '--time=' + time.strftime("%H:%M:%S", time.gmtime(computation_time)),
