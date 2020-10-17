@@ -32,7 +32,7 @@ recordings = project.recordings
 recordings['exists'] = recordings['filename'].map(lambda f: os.path.exists(os.path.join(project.path, 'recordings', f)))
 recordings = recordings[recordings['exists'] == True]
 
-recordings['duration'] = project.recordings['filename'].map(lambda f:
+recordings['duration'] = recordings['filename'].map(lambda f:
     get_audio_duration(os.path.join(project.path, 'recordings', f))
 )
 # GPU computation time upper bound according to https://docs.google.com/presentation/d/1JTM_e56RSCpHqzq0VDu8Qude7P5UNKM6v18LT4jI7Do/edit#slide=id.ga0712b0b07_0_16
