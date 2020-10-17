@@ -29,14 +29,14 @@ def get_audio_duration(filename):
     return f.getnframes() / float(f.getframerate())
 
 recordings = project.recordings
+recordings['exists'] = recordings['filename'].map(lambda f: os.path.exists(os.path.join(project.path, 'recordings', f)))
+recordings = recordings[recordings['exists'] == True]
+
 recordings['duration'] = project.recordings['filename'].map(lambda f:
     get_audio_duration(os.path.join(project.path, 'recordings', f))
 )
 # GPU computation time upper bound according to https://docs.google.com/presentation/d/1JTM_e56RSCpHqzq0VDu8Qude7P5UNKM6v18LT4jI7Do/edit#slide=id.ga0712b0b07_0_16
 recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 2
-
-recordings['exists'] = recordings['filename'].map(lambda f: os.path.exists(os.path.join(project.path, 'recordings', f)))
-recordings = recordings[recordings['exists'] == True]
 
 # do the splitting by child_id for now
 for group, group_recordings in recordings.groupby('child_id'):
