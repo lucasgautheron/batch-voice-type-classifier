@@ -52,7 +52,7 @@ for group, group_recordings in recordings.groupby('child_id'):
     proc = subprocess.Popen(
         [
             'sbatch',
-            '--partition=gpu2'
+            '--partition=gpu',
             '--gres=gpu:1',
             '--job-name=' + job_name,
             '--mem=30G',
