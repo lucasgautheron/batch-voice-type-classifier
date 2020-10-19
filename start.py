@@ -35,7 +35,7 @@ recordings['duration'] = recordings['filename'].map(lambda f:
 recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 5
 
 # do the splitting by child_id for now
-for group, group_recordings in recordings.groupby('child_id'):
+for group, group_recordings in recordings.groupby('experiment'):
     inputs = group_recordings['filename'].map(lambda f: os.path.join(project.path, 'recordings', f)).tolist()
     destinations = group_recordings['filename'].map(lambda f: os.path.join(project.path, 'raw_annotations/vtc', f + '.rttm')).tolist()
     tmpnames = group_recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')).tolist()
