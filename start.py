@@ -26,6 +26,10 @@ recordings = project.recordings
 recordings['exists'] = recordings['filename'].map(lambda f: os.path.exists(os.path.join(project.path, 'recordings', f)))
 recordings = recordings[recordings['exists'] == True]
 
+
+def get_audio_duration(filename):
+    f = wave.open(filename,'r')
+    return f.getnframes() / float(f.getframerate())
 recordings['duration'] = recordings['filename'].map(lambda f:
     get_audio_duration(os.path.join(project.path, 'recordings', f))
 )
@@ -60,7 +64,3 @@ for group, group_recordings in recordings.groupby('child_id'):
     proc = subprocess.Popen(cmd)
 
     print(" ".join(cmd))
-
-def get_audio_duration(filename):
-    f = wave.open(filename,'r')
-    return f.getnframes() / float(f.getframerate())
