@@ -26,7 +26,7 @@ for i in range(len(inputs)):
 
     os.symlink(input, os.path.join('tmp', tmpname))
     subprocess.call(['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=4'])
-    output = os.path.join('voice-type-classifier/output', os.path.basename(tmpname), 'all.rttm')
+    output = os.path.join('voice-type-classifier/output_voice_type_classifier', os.path.basename(tmpname), 'all.rttm')
     if os.path.exists(output):
         shutil.copy(output, destination)
 
