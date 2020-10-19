@@ -32,7 +32,7 @@ recordings['duration'] = recordings['filename'].map(lambda f:
     get_audio_duration(os.path.join(project.path, 'recordings', f))
 )
 # GPU computation time upper bound according to https://docs.google.com/presentation/d/1JTM_e56RSCpHqzq0VDu8Qude7P5UNKM6v18LT4jI7Do/edit#slide=id.ga0712b0b07_0_16
-recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 4
+recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 5
 
 # do the splitting by child_id for now
 for group, group_recordings in recordings.groupby('child_id'):

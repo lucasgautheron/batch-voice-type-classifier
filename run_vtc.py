@@ -25,7 +25,9 @@ for i in range(len(inputs)):
     tmpname = tmpnames[i]
 
     os.symlink(input, os.path.join('tmp', tmpname))
-    subprocess.call(['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=8'])
-    shutil.copy(os.path.join('voice-type-classifier/output', os.path.basename(tmpname), 'all.rttm'), destination)
+    subprocess.call(['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=4'])
+    output = os.path.join('voice-type-classifier/output', os.path.basename(tmpname), 'all.rttm')
+    if os.path.exists(output):
+        shutil.copy(output, destination)
 
 print('complete')
