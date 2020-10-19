@@ -55,12 +55,7 @@ for group, group_recordings in recordings.groupby('child_id'):
         '--error=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.err'), 
 
         './run_vtc.sh', '--inputs'
-    ] +
-    inputs +
-    ['--destinations'] + 
-    destinations +
-    ['--tmpnames'] +
-    tmpnames
+    ] + inputs + ['--destinations'] + destinations + ['--tmpnames'] + tmpnames
 
     proc = subprocess.Popen(cmd)
 
