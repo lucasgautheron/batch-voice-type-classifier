@@ -8,8 +8,6 @@ import wave
 import time
 import datetime
 
-subprocess.call(['git', 'clone', '--recurse-submodules', 'https://github.com/MarvinLvn/voice_type_classifier.git'])
-
 parser = argparse.ArgumentParser(description='')
 parser.add_argument("--source", help = "path to project", required = True)
 parser.add_argument("--profile", help = "audio profile to be used", default = "", required = False)
