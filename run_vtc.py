@@ -13,6 +13,7 @@ args = parser.parse_args()
 
 inputs = list(map(os.path.abspath, args.inputs))
 destinations = list(map(os.path.abspath, args.destinations))
+tmpnames = args.tmpnames
 
 if len(inputs) != len(destinations) or len(inputs) != len(tmpnames):
     print('wrong input')
@@ -21,7 +22,7 @@ if len(inputs) != len(destinations) or len(inputs) != len(tmpnames):
 for i in range(len(inputs)):
     input = inputs[i]
     destination = destinations[i]
-    tmpname = args.tmpnames[i]
+    tmpname = tmpnames[i]
 
     os.symlink(input, os.path.join('tmp', tmpname))
     subprocess.call(['./apply.sh', os.path.join('tmp', tmpname), '--device=gpu', '--batch=8'])
