@@ -28,7 +28,7 @@ for i in range(len(inputs)):
     os.symlink(input, os.path.join('tmp', tmpname))
 
     proc = subprocess.Popen(
-        ['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=4'],
+        ['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=8'],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE
     )
