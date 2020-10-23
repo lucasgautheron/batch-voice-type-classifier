@@ -55,6 +55,7 @@ for group, group_recordings in recordings.groupby('experiment'):
         '--time=' + time.strftime("%H:%M:%S", time.gmtime(computation_time)),
         '--output=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.out'), 
         '--error=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.err'), 
+        '--exclude=puck5'
 
         './run_vtc.sh', '--inputs'
     ] + inputs + ['--destinations'] + destinations + ['--tmpnames'] + tmpnames

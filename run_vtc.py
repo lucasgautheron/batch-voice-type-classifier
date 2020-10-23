@@ -3,7 +3,7 @@ import argparse
 import os
 import shutil
 import sys
-
+import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--inputs", nargs="+", default=[])
@@ -19,15 +19,35 @@ if len(inputs) != len(destinations) or len(inputs) != len(tmpnames):
     print('wrong input')
     sys.exit(1)
 
+status = {}
 for i in range(len(inputs)):
     input = inputs[i]
     destination = destinations[i]
     tmpname = tmpnames[i]
 
     os.symlink(input, os.path.join('tmp', tmpname))
-    subprocess.call(['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=4'])
+
+    proc = subprocess.Popen(
+        ['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=4'],
+        stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE
+    )
+    (stdout, stderr) = proc.communicate()
+    print(stdout)
+    print(stderr, file = sys.stderr)
+
     output = os.path.join('voice-type-classifier/output_voice_type_classifier', os.path.basename(tmpname), 'all.rttm')
+
+    success = False
     if os.path.exists(output):
         shutil.copy(output, destination)
+        success = True
 
-print('complete')
+    status[destination] = {
+        'error': stderr,
+        'success': success,
+        'datetime': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+
+for dest in status:
+    open('output.csv', 'a+').write("{},{},{},{}\n".format(dest, status[dest]['datetime'], status[dest]['success'], status['dest']['error']))
