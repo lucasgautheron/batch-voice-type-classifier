@@ -50,4 +50,4 @@ for i in range(len(inputs)):
     }
 
 for dest in status:
-    open('output.csv', 'a+').write("{},{},{},{}\n".format(dest, status[dest]['datetime'], status[dest]['success'], status['dest']['error']))
+    open('output.csv', 'a+').write("{},{},{},{}\n".format(dest, status[dest]['datetime'], status[dest]['success'], status[dest]['error']))

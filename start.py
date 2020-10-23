@@ -44,7 +44,7 @@ print('splitting task in {} jobs'.format(batches))
 for group, group_recordings in recordings.groupby('batch'):
     inputs = group_recordings['filename'].map(lambda f: os.path.join(project.path, audio_prefix, f)).tolist()
     destinations = group_recordings['filename'].map(lambda f: os.path.join(project.path, 'raw_annotations/vtc', f + '.rttm')).tolist()
-    tmpnames = group_recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')).tolist()
+    tmpnames = group_recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav').tolist()
 
     computation_time = group_recordings['vtc_computation_time_estimate'].sum()
     job_name = 'vtc_{}_{}'.format(group, datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
