@@ -20,11 +20,10 @@ if len(errors) > 0:
     print("validation failed, {} error(s) occured".format(len(errors)), file = sys.stderr)
     sys.exit(1)
 
-audio_prefix = args.profile if args.profile else 'recordings'
+audio_prefix = os.path.join('converted_recordings', args.profile) if args.profile else 'recordings'
 recordings = project.recordings
 recordings['exists'] = recordings['filename'].map(lambda f: os.path.exists(os.path.join(project.path, audio_prefix, f)))
 recordings = recordings[recordings['exists'] == True]
-
 
 def get_audio_duration(filename):
     f = wave.open(filename,'r')
