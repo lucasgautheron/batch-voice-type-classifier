@@ -36,7 +36,7 @@ recordings['duration'] = recordings['filename'].map(lambda f:
 recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 4
 target_computation_time = 20*3600
 batches = recordings['vtc_computation_time_estimate'].sum()/target_computation_time
-recordings['batch'] = (recordings.index/batches).astype(int)
+recordings['batch'] = (batches*recordings.index/recordings.shape[0]).astype(int)
 
 print('splitting task in {} jobs'.format(batches))
 
