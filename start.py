@@ -28,14 +28,20 @@ recordings = recordings[recordings['exists'] == True]
 def get_audio_duration(filename):
     f = wave.open(filename,'r')
     return f.getnframes() / float(f.getframerate())
+
 recordings['duration'] = recordings['filename'].map(lambda f:
     get_audio_duration(os.path.join(project.path, audio_prefix, f))
 )
 # GPU computation time upper bound according to https://docs.google.com/presentation/d/1JTM_e56RSCpHqzq0VDu8Qude7P5UNKM6v18LT4jI7Do/edit#slide=id.ga0712b0b07_0_16
-recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 5
+recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 4
+target_computation_time = 20*3600
+batches = recordings['vtc_computation_time_estimate'].sum()/target_computation_time
+recordings['batch'] = (recordings.index/batches).astype(int)
+
+print('splitting task in {} jobs'.format(batches))
 
 # do the splitting by child_id for now
-for group, group_recordings in recordings.groupby('experiment'):
+for group, group_recordings in recordings.groupby('batch'):
     inputs = group_recordings['filename'].map(lambda f: os.path.join(project.path, audio_prefix, f)).tolist()
     destinations = group_recordings['filename'].map(lambda f: os.path.join(project.path, 'raw_annotations/vtc', f + '.rttm')).tolist()
     tmpnames = group_recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')).tolist()
