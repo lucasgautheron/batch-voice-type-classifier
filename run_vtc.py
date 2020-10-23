@@ -49,5 +49,4 @@ for i in range(len(inputs)):
         'datetime': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
 
-for dest in status:
-    open('output.csv', 'a+').write("{},{},{},{}\n".format(dest, status[dest]['datetime'], status[dest]['success'], status[dest]['error']))
+    open('output.csv', 'a+').write("{},{},{},{}\n".format(destination, status[destination]['datetime'], status[destination]['success'], status[destination]['error']))
