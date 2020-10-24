@@ -36,7 +36,7 @@ for i in range(len(inputs)):
     print(stdout)
     print(stderr, file = sys.stderr)
 
-    output = os.path.join('voice-type-classifier/output_voice_type_classifier', os.path.basename(tmpname), 'all.rttm')
+    output = os.path.join('voice-type-classifier/output_voice_type_classifier', os.path.splitext(os.path.basename(tmpname))[0], 'all.rttm')
 
     success = False
     if os.path.exists(output):
