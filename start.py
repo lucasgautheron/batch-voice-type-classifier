@@ -37,19 +37,18 @@ recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 *
 target_computation_time = 20*3600
 batches = recordings['vtc_computation_time_estimate'].sum()/target_computation_time
 recordings['batch'] = (batches*recordings.index/recordings.shape[0]).astype(int)
+recordings['input'] = recordings['filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
+recordings['destination'] = recordings['filename'].map(lambda f: os.path.join(project.path, 'raw_annotations/vtc', f + '.rttm'))
+recordings['tmpname'] = recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav')
 
 print('splitting task in {} jobs'.format(batches))
 
 # do the splitting by child_id for now
 for group, group_recordings in recordings.groupby('batch'):
-    inputs = group_recordings['filename'].map(lambda f: os.path.join(project.path, audio_prefix, f)).tolist()
-    destinations = group_recordings['filename'].map(lambda f: os.path.join(project.path, 'raw_annotations/vtc', f + '.rttm')).tolist()
-    tmpnames = group_recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav').tolist()
-
     computation_time = group_recordings['vtc_computation_time_estimate'].sum()
     job_name = 'vtc_{}_{}'.format(group, datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
 
-    for destination in destinations:
+    for destination in group_recordings['destination'].tolist():
         os.makedirs(os.path.dirname(destination), exist_ok = True)
 
     cmd = [
@@ -64,7 +63,7 @@ for group, group_recordings in recordings.groupby('batch'):
         '--exclude=puck5',
 
         './run_vtc.sh', '--inputs'
-    ] + inputs + ['--destinations'] + destinations + ['--tmpnames'] + tmpnames
+    ] + group_recordings['input'].tolist() + ['--destinations'] + group_recordings['destination'].tolist() + ['--tmpnames'] + group_recordings['tmpname'].tolist()
 
     proc = subprocess.Popen(cmd)
 
