@@ -72,8 +72,8 @@ for group, group_recordings in recordings.groupby('batch'):
         '--error=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.err'), 
         '--exclude=puck5',
 
-        './run_vtc.py', '--batch', str(args.batch), '--inputs'
-    ] + group_recordings['input'].tolist() + ['--destinations'] + group_recordings['destination'].tolist() + ['--tmpnames'] + group_recordings['tmpname'].tolist()
+        './run_vtc.py', '--inputs'
+    ] + group_recordings['input'].tolist() + ['--destinations'] + group_recordings['destination'].tolist() + ['--tmpnames'] + group_recordings['tmpname'].tolist() + ['--batch', str(args.batch)]
 
     proc = subprocess.Popen(cmd)
 
