@@ -45,7 +45,7 @@ if not args.overwrite:
     recordings = recordings[recordings['rttm_exists'] == False]
 
 # GPU computation time upper bound according to https://docs.google.com/presentation/d/1JTM_e56RSCpHqzq0VDu8Qude7P5UNKM6v18LT4jI7Do/edit#slide=id.ga0712b0b07_0_16
-recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 4
+recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 6
 target_computation_time = 20*3600
 batches = recordings['vtc_computation_time_estimate'].sum()/target_computation_time
 recordings['batch'] = (batches*recordings.index/recordings.shape[0]).astype(int)
