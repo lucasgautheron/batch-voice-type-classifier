@@ -44,6 +44,8 @@ if not args.overwrite:
     recordings['rttm_exists'] = recordings['destination'].apply(os.path.exists)
     recordings = recordings[recordings['rttm_exists'] == False]
 
+recordings.reset_index(inplace = True)
+
 # GPU computation time upper bound according to https://docs.google.com/presentation/d/1JTM_e56RSCpHqzq0VDu8Qude7P5UNKM6v18LT4jI7Do/edit#slide=id.ga0712b0b07_0_16
 recordings['vtc_computation_time_estimate'] = recordings['duration'] * 0.57/20 * 6
 target_computation_time = 20*3600
@@ -70,8 +72,8 @@ for group, group_recordings in recordings.groupby('batch'):
         '--error=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.err'), 
         '--exclude=puck5',
 
-        './run_vtc.py', '--inputs'
-    ] + ['--batch', str(args.batch)] + group_recordings['input'].tolist() + ['--destinations'] + group_recordings['destination'].tolist() + ['--tmpnames'] + group_recordings['tmpname'].tolist()
+        './run_vtc.py', '--batch', str(args.batch), '--inputs'
+    ] + group_recordings['input'].tolist() + ['--destinations'] + group_recordings['destination'].tolist() + ['--tmpnames'] + group_recordings['tmpname'].tolist()
 
     proc = subprocess.Popen(cmd)
 
