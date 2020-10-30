@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--inputs", nargs="+", default=[])
 parser.add_argument("--destinations", nargs="+", default=[])
 parser.add_argument("--tmpnames", nargs="+", default=[])
+parser.add_argument("--batch", default = 8, type = int)
 args = parser.parse_args()
 
 inputs = list(map(os.path.abspath, args.inputs))
@@ -29,7 +30,7 @@ for i in range(len(inputs)):
     os.symlink(input, os.path.join('tmp', tmpname))
 
     proc = subprocess.Popen(
-        ['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch=8'],
+        ['./apply.sh', os.path.abspath(os.path.join('tmp', tmpname)), '--device=gpu', '--batch={}'.format(args.batch)],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE
     )
