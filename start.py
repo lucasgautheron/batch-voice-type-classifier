@@ -23,7 +23,7 @@ if len(errors) > 0:
     print("validation failed, {} error(s) occured".format(len(errors)), file = sys.stderr)
     sys.exit(1)
 
-audio_prefix = os.path.join('converted_recordings', args.profile) if args.profile else 'recordings'
+audio_prefix = os.path.join('recordings/converted', args.profile) if args.profile else 'recordings/raw'
 recordings = project.recordings
 recordings['exists'] = recordings['recording_filename'].map(lambda f: os.path.exists(os.path.join(project.path, audio_prefix, f)))
 recordings = recordings[recordings['exists'] == True]
