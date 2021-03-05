@@ -17,7 +17,7 @@ parser.add_argument("--overwrite", help = "overwrite rttm if exists", default = 
 args = parser.parse_args()
 
 project = ChildProject(args.source)
-errors, warnings = project.validate_input_data()
+errors, warnings = project.validate()
 
 if len(errors) > 0:
     print("validation failed, {} error(s) occured".format(len(errors)), file = sys.stderr)
