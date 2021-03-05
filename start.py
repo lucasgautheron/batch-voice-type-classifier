@@ -37,7 +37,7 @@ recordings['duration'] = recordings['recording_filename'].map(lambda f:
 )
 
 recordings['input'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
-recordings['destination'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, 'annotations/vtc/raw', f + '.rttm'))
+recordings['destination'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, 'annotations/vtc/raw', os.path.splitext(f)[0] + '.rttm'))
 recordings['tmpname'] = recordings['recording_filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav')
 
 if not args.overwrite:
