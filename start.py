@@ -68,8 +68,8 @@ for group, group_recordings in recordings.groupby('batch'):
         '--job-name=' + job_name,
         '--mem={}G'.format(args.mem),
         '--time=' + time.strftime("%H:%M:%S", time.gmtime(computation_time)),
-        '--output=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.out'), 
-        '--error=' + os.path.join(project.path, 'raw_annotations/vtc', job_name + '.err'), 
+        '--output=' + os.path.join(project.path, 'annotations/vtc/raw', job_name + '.out'), 
+        '--error=' + os.path.join(project.path, 'annotations/vtc/raw', job_name + '.err'), 
         '--exclude=puck5',
 
         './run_vtc.py', '--inputs'
