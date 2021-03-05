@@ -25,20 +25,20 @@ if len(errors) > 0:
 
 audio_prefix = os.path.join('converted_recordings', args.profile) if args.profile else 'recordings'
 recordings = project.recordings
-recordings['exists'] = recordings['filename'].map(lambda f: os.path.exists(os.path.join(project.path, audio_prefix, f)))
+recordings['exists'] = recordings['recording_filename'].map(lambda f: os.path.exists(os.path.join(project.path, audio_prefix, f)))
 recordings = recordings[recordings['exists'] == True]
 
 def get_audio_duration(filename):
     f = wave.open(filename,'r')
     return f.getnframes() / float(f.getframerate())
 
-recordings['duration'] = recordings['filename'].map(lambda f:
+recordings['duration'] = recordings['recording_filename'].map(lambda f:
     get_audio_duration(os.path.join(project.path, audio_prefix, f))
 )
 
-recordings['input'] = recordings['filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
-recordings['destination'] = recordings['filename'].map(lambda f: os.path.join(project.path, 'raw_annotations/vtc', f + '.rttm'))
-recordings['tmpname'] = recordings['filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav')
+recordings['input'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
+recordings['destination'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, 'annotations/vtc/raw', f + '.rttm'))
+recordings['tmpname'] = recordings['recording_filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav')
 
 if not args.overwrite:
     recordings['rttm_exists'] = recordings['destination'].apply(os.path.exists)
