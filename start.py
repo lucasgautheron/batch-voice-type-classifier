@@ -24,19 +24,27 @@ if len(errors) > 0:
     sys.exit(1)
 
 audio_prefix = os.path.join('recordings/converted', args.profile) if args.profile else 'recordings/raw'
-recordings = project.recordings
-recordings['exists'] = recordings['recording_filename'].map(lambda f: os.path.exists(os.path.join(project.path, audio_prefix, f)))
+
+if args.profile:
+    converted = pd.read_csv(os.path.join(project.path, audio_prefix, 'recordings.csv'))
+    recordings = project.recordings
+    recordings = recordings.merge(converted, left_on = 'recording_filename', right_on = 'original_filename')
+    recordings['input'] = recordings['converted_filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
+else:
+    recordings['input'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
+
+recordings['exists'] = recordings['input'].map(lambda f: os.path.exists(f))
+print(recordings)
 recordings = recordings[recordings['exists'] == True]
 
 def get_audio_duration(filename):
     f = wave.open(filename,'r')
     return f.getnframes() / float(f.getframerate())
 
-recordings['duration'] = recordings['recording_filename'].map(lambda f:
-    get_audio_duration(os.path.join(project.path, audio_prefix, f))
+recordings['duration'] = recordings['input'].map(lambda f:
+    get_audio_duration(f)
 )
 
-recordings['input'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
 recordings['destination'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, 'annotations/vtc/raw', os.path.splitext(f)[0] + '.rttm'))
 recordings['tmpname'] = recordings['recording_filename'].map(lambda s: datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '_' + s.replace('/', '_')[:-3] + 'wav')
 
