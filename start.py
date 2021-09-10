@@ -1,4 +1,5 @@
 from ChildProject.projects import ChildProject
+from ChildProject.pipelines.pipeline import Pipeline
 import argparse
 import sys
 import pandas as pd
@@ -29,7 +30,7 @@ audio_prefix = os.path.join('recordings/converted', args.profile) if args.profil
 recordings = project.recordings
 
 if args.recordings:
-    recordings = recordings[recordings['recording_filename'].isin(args.recordings)]
+    recordings = project.get_recordings_from_list(Pipeline.recordings_from_list(args.recordings))
 
 if args.profile:
     converted = pd.read_csv(os.path.join(project.path, audio_prefix, 'recordings.csv'))
