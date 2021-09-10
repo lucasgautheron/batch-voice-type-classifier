@@ -10,7 +10,7 @@ the Voice Type Classifier as a submodule.
 Then, create the `pyannote` conda environment:
 
 ```bash
-cd batch_voice_type_classifier/voice_type_classifier
+cd batch-voice-type-classifier/voice-type-classifier
 conda env create -f vtc.yml
 ```
 
