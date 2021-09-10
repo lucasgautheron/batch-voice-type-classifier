@@ -32,6 +32,9 @@ recordings = project.recordings
 if args.recordings:
     recordings = project.get_recordings_from_list(Pipeline.recordings_from_list(args.recordings))
 
+print('selected recordings:')
+print(recordings)
+
 if args.profile:
     converted = pd.read_csv(os.path.join(project.path, audio_prefix, 'recordings.csv'))
     recordings = recordings.merge(converted, left_on = 'recording_filename', right_on = 'original_filename')
@@ -40,8 +43,10 @@ else:
     recordings['input'] = recordings['recording_filename'].map(lambda f: os.path.join(project.path, audio_prefix, f))
 
 recordings['exists'] = recordings['input'].map(lambda f: os.path.exists(f))
-print(recordings)
 recordings = recordings[recordings['exists'] == True]
+
+print('recordings that exist:')
+print(recordings)
 
 def get_audio_duration(filename):
     f = wave.open(filename,'r')
