@@ -23,7 +23,7 @@ errors, warnings = project.validate()
 
 if len(errors) > 0:
     print("validation failed, {} error(s) occured".format(len(errors)), file = sys.stderr)
-    sys.exit(1)
+    print("proceeding despite errors...")
 
 audio_prefix = os.path.join('recordings/converted', args.profile) if args.profile else 'recordings/raw'
 
