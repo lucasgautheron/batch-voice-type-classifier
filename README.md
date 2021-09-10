@@ -16,6 +16,14 @@ conda env create -f vtc.yml
 
 ### Usage
 
+Activate the pyannote environment:
+
+```bash
+conda activate pyannot
+```
+
+Then, jobs can be started through `start.py`:
+
 ```bash
 $ python start.py --help
 usage: start.py [-h] --source SOURCE [--profile PROFILE] [--mem MEM] [--batch BATCH] [--overwrite OVERWRITE] [--recordings RECORDINGS [RECORDINGS ...]]
